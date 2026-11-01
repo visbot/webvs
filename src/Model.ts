@@ -1,10 +1,9 @@
-import * as EventEmitter from "eventemitter3";
-import filter from "lodash-es/filter";
+type Listener = (...args: any[]) => void;
 
 interface ISubscription {
-    emitter: EventEmitter;
+    emitter: Model;
     event: string;
-    callback: (...args: any[]) => void;
+    callback: Listener;
 }
 
 /**
@@ -17,8 +16,45 @@ interface ISubscription {
  * to model component options and thus allow editors to treat each
  * component as a Data Model object to drive user interface.
  */
-export default abstract class Model extends EventEmitter {
+export default abstract class Model {
+    private listeners = new Map<string, Set<Listener>>();
     private subscriptions: ISubscription[] = [];
+
+    public on(event: string, fn: Listener): this {
+        let set = this.listeners.get(event);
+        if (!set) {
+            set = new Set();
+            this.listeners.set(event, set);
+        }
+        set.add(fn);
+        return this;
+    }
+
+    public addListener(event: string, fn: Listener): this {
+        return this.on(event, fn);
+    }
+
+    /**
+     * Removes `fn` from `event`, or every listener of `event` when `fn` is omitted.
+     */
+    public removeListener(event: string, fn?: Listener): this {
+        if (fn) {
+            this.listeners.get(event)?.delete(fn);
+        } else {
+            this.listeners.delete(event);
+        }
+        return this;
+    }
+
+    public emit(event: string, ...args: any[]): boolean {
+        const set = this.listeners.get(event);
+        if (!set || set.size === 0) {
+            return false;
+        }
+        // snapshot, so listeners added or removed during emit don't affect this round
+        [...set].forEach((fn) => fn.apply(this, args));
+        return true;
+    }
 
     /**
      * Returns the value of an attribute.
@@ -86,7 +122,7 @@ export default abstract class Model extends EventEmitter {
     }
 
     /**
-     * Add a listener to another EventEmitter.
+     * Add a listener to another Model.
      *
      * This provides an event subscription list facility. Allowing
      * subclasses to listen to other emitters and remove all or some listeners
@@ -96,7 +132,7 @@ export default abstract class Model extends EventEmitter {
      * @param event the name of the event to listen to
      * @param callback the callback for the event handler
      */
-    protected listenTo(emitter: EventEmitter, event: string, callback: (...args: any[]) => void) {
+    protected listenTo(emitter: Model, event: string, callback: Listener) {
         emitter.addListener(event, callback);
         this.subscriptions.push({emitter, event, callback});
     }
@@ -112,18 +148,12 @@ export default abstract class Model extends EventEmitter {
      * @param event the event to be removed
      * @param callback the callback to be removed
      */
-    protected stopListening(emitter?: EventEmitter, event?: string, callback?: (...args: any[]) => void) {
-        const subFilter: any = {};
-        if (emitter) {
-            subFilter.emitter = emitter;
-        }
-        if (event) {
-            subFilter.event = event;
-        }
-        if (emitter) {
-            subFilter.callback = callback;
-        }
-        const subs = filter(this.subscriptions, subFilter);
+    protected stopListening(emitter?: Model, event?: string, callback?: Listener) {
+        const subs = this.subscriptions.filter((sub) =>
+            (!emitter || sub.emitter === emitter) &&
+            (!event || sub.event === event) &&
+            (!callback || sub.callback === callback),
+        );
         subs.forEach((sub) => {
             sub.emitter.removeListener(sub.event, sub.callback);
         });

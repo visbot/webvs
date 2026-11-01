@@ -1,11 +1,11 @@
-import isNumber from "lodash-es/isNumber";
-import uniqueId from "lodash-es/uniqueId";
 import AnalyserAdapter from "../../src/analyser/AnalyserAdapter";
 import Component from "../../src/Component";
 import IMain from "../../src/IMain";
 import Main from "../../src/Main";
-import { AudioChannels, clamp, glslFloatRepr, noop } from "../../src/utils";
+import { AudioChannels, clamp, glslFloatRepr } from "../../src/utils";
 import ShaderProgram from "../../src/webgl/ShaderProgram";
+
+let errorCounter = 0;
 
 export class MockAnalyser extends AnalyserAdapter {
     private sineData: Float32Array;
@@ -28,7 +28,6 @@ export class MockAnalyser extends AnalyserAdapter {
         return this.beat;
     }
 
-    // tslint:disable-next-line:no-empty
     public update() {}
 
     public getSpectrum(channel?: AudioChannels) {
@@ -43,7 +42,6 @@ interface ITestPatternOpts {
     blue: number;
 }
 
-// tslint:disable-next-line:max-classes-per-file
 class TestPattern extends Component {
     public static componentName: string = "TestPattern";
     public static componentTag: string = "render";
@@ -111,7 +109,6 @@ function imageFuzzyOk(
     tempCanvas.height = height;
     const ctxt = tempCanvas.getContext("2d", {
         alpha: false,
-        preserveDrawingBuffer: true,
     });
 
     // get source pixels
@@ -156,7 +153,7 @@ function imageFuzzyOk(
 
     if (mismatch >= mismatchThreshold) {
         // show the diff image
-        const errorId = uniqueId();
+        const errorId = ++errorCounter;
         const errorElement = document.createElement("span");
         const expectSrc = expectDataUrl;
         const outputSrc = canvas.toDataURL();
@@ -205,7 +202,7 @@ interface IMainTestOpts {
 
 export async function mainTest(opts: IMainTestOpts) {
     const {preset, expectImageSrc, onFrame, onInit, frameCount = 10} = opts;
-    const expectImage = await loadImage("/base/test/func/assert/" + expectImageSrc);
+    const expectImage = await loadImage("/test/func/assert/" + expectImageSrc);
     const canvas = document.createElement("canvas");
     canvas.width = expectImage.width;
     canvas.height = expectImage.height;
@@ -224,7 +221,6 @@ export async function mainTest(opts: IMainTestOpts) {
             }
             return ++frameCounter;
         };
-        // tslint:disable-next-line:no-empty
         const cancelAnimationFrame = () => {};
         const analyser = new MockAnalyser();
         main = new Main({
@@ -251,7 +247,7 @@ export function makeSinglePreset(type: string, opts: any, testPatternBlue: numbe
     const components = [
         componentOpts,
     ];
-    if (isNumber(testPatternBlue)) {
+    if (typeof testPatternBlue === "number") {
         components.unshift({
             blue: testPatternBlue,
             type: "TestPattern",

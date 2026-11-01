@@ -1,3 +1,3 @@
 declare module "*.pegjs" {
-    export const parse: (code: string) => any;
+    export function parse(input: string, options?: object): unknown;
 }

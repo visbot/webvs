@@ -1,0 +1,8 @@
+{
+    "$schema": "./node_modules/oxlint/configuration_schema.json",
+    "plugins": ["typescript", "unicorn", "oxc"],
+    "rules": {
+        // unused params mostly match interface or override signatures
+        "no-unused-vars": ["warn", { "args": "none" }]
+    }
+}

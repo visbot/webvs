@@ -1,8 +1,6 @@
-import flatMap from "lodash-es/flatMap";
 import Component, { IContainer } from "../Component";
 import IMain from "../IMain";
 import { WebGLVarType } from "../utils";
-import RenderingContext from "../webgl/RenderingContext";
 import ShaderProgram from "../webgl/ShaderProgram";
 
 /**
@@ -66,7 +64,7 @@ export default class ChannelShift extends Component {
                 void main() {
                     vec3 color = getSrcColor().rgb;
                     ${
-                        flatMap(ShiftChannelsKeys, (mode) => `
+                        ShiftChannelsKeys.map((mode) => `
                             if(u_channel == ${ChannelShiftMode[mode]}) {
                                 setFragColor(vec4(color.${mode.toLowerCase()}, 1));
                             }

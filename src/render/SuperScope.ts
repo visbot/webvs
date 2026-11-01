@@ -1,11 +1,9 @@
-import each from "lodash-es/each";
 import Component, {IContainer} from "../Component";
 import CodeInstance from "../expr/CodeInstance";
-import compileExpr, { ICompileResult } from "../expr/compileExpr";
+import compileExpr from "../expr/compileExpr";
 import IMain from "../IMain";
 import { AudioChannels, AudioSource, BlendMode, Color, parseColorNorm, WebGLVarType } from "../utils";
 import Buffer from "../webgl/Buffer";
-import RenderingContext from "../webgl/RenderingContext";
 import ShaderProgram from "../webgl/ShaderProgram";
 
 /**
@@ -184,9 +182,9 @@ export default class SuperScope extends Component {
 
     public draw() {
         const color = this._makeColor();
-        each(this.code, (code) => {
+        for (const code of this.code) {
             this.drawScope(code, color, !this.inited);
-        });
+        }
         this.inited = true;
     }
 
@@ -236,9 +234,6 @@ export default class SuperScope extends Component {
         let thickY;
         let lastX;
         let lastY;
-        let lastR;
-        let lastG;
-        let lastB;
         if (this.veryThick) {
             bufferSize = (dots ? (nPoints * 6) : (nPoints * 6 - 6));
             thickX = this.opts.thickness / gl.drawingBufferWidth;
@@ -322,9 +317,6 @@ export default class SuperScope extends Component {
                     }
                     lastX = code.x;
                     lastY = code.y;
-                    lastR = code.red;
-                    lastG = code.green;
-                    lastB = code.blue;
                 }
             } else {
                 if (dots) {
@@ -354,9 +346,6 @@ export default class SuperScope extends Component {
                     }
                     lastX = code.x;
                     lastY = code.y;
-                    lastR = code.red;
-                    lastG = code.green;
-                    lastB = code.blue;
                 }
             }
         }
@@ -513,8 +502,8 @@ export default class SuperScope extends Component {
     }
 
     private handleResize() {
-        each(this.code, (code) => {
+        for (const code of this.code) {
             code.updateDimVars(this.main.getRctx().getGl());
-        });
+        }
     }
 }

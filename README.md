@@ -1,9 +1,8 @@
 # Webvs
 
-[![npm version](https://badge.fury.io/js/webvs.svg)](https://www.npmjs.com/package/webvs)
-[![CircleCI](https://img.shields.io/circleci/project/azeem/webvs.svg?)](https://circleci.com/gh/azeem/webvs/)
-[![David](https://img.shields.io/david/azeem/webvs.svg)](https://david-dm.org/azeem/webvs)
-[![David](https://img.shields.io/david/dev/azeem/webvs.svg)](https://david-dm.org/azeem/webvs?type=dev)
+[![License](https://img.shields.io/github/license/visbot/webvs?color=blue&style=for-the-badge)](https://github.com/visbot/node-webvs/blob/main/LICENSE)
+[![Version: npm](https://img.shields.io/npm/v/@visbot/webvs?style=for-the-badge)](https://www.npmjs.org/package/@visbot/webvs)
+![GitHub branch check runs](https://img.shields.io/github/check-runs/visbot/webvs/main?style=for-the-badge)
 
 A Winamp AVS like visualization library for the web.
 
@@ -22,26 +21,25 @@ The documentation for the [Main](http://azeemarshad.in/webvs/classes/main.html) 
 
 For use with package bundlers, Webvs is available on [npm](https://www.npmjs.com/package/webvs) as `webvs`. Install using
 
-	npm install webvs
+	npm install @visbot/webvs
 
 and import in your code and initialize as follows
 
 ```js
-import Webvs from 'webvs';
+import Webvs from '@visbot/webvs';
 const webvs = new Webvs.Main(....)
 ```
 
-### CDN
+or import only what you need
 
-You can also embed webvs.js directly from [unpkg](https://unpkg.com) CDN.
+```js
+import { Main, WebAudioAnalyser } from '@visbot/webvs';
+const webvs = new Main(....)
+```
 
-	<script src="https://unpkg.com/webvs/dist/webvs.js"></script>
+Both `import` and `require` are supported.
 
-or for a minified version
-
-	<script src="https://unpkg.com/webvs/dist/webvs.min.js"></script>
-
-This script exposes a `Webvs` global which you can use to initialize like so `new Webvs.Main(...)`.
+Builtin resources (images used by some presets) load from `resources/` relative to the page: serve the package's `resources/` folder next to your page, or pass `resourcePrefix` to `Main`.
 
 ## Usage
 A typical usage involves creating an Analyser from your music source (e.g. [Webvs.WebAudioAnalyser](http://azeemarshad.in/webvs/classes/webaudioanalyser.html) to use an `audio` tag or song url as a source) and initializing an instance of `Webvs.Main` with it. The main object serves as the primary interface or controlling the visualization. e.g.
@@ -75,13 +73,13 @@ analyser.play();
 
 To develop Webvs clone the repo and install packages
 
-	npm install
+	pnpm install
 
 For typical workflow, start a dev server with
 
-	npm run dev
+	pnpm dev
 
-and point browser to `http://localhost:8080/examples/` to view webvs test page.
+It serves the webvs test page at `http://localhost:5173/examples/` straight from the source, no build needed.
 
 ## Contributing
 

@@ -1,7 +1,4 @@
-import defaults from "lodash-es/defaults";
-import isString from "lodash-es/isString";
-import Component, { IComponentConstructor, IContainer } from "./Component";
-import ComponentRegistry from "./ComponentRegistry";
+import Component, { IContainer } from "./Component";
 import IMain from "./IMain";
 import TextureSetManager from "./webgl/TextureSetManager";
 
@@ -44,7 +41,6 @@ export default abstract class Container extends Component implements IContainer 
             for (const opts of this.opts.components) {
                 const componentClass = this.main.getComponentRegistry().getComponentClass(opts.type);
                 if (!componentClass) {
-                    // tslint:disable-next-line:no-console
                     console.warn(`Unknown ComponentClass: ${opts.type}. Skipping.`);
                     continue;
                 }
@@ -86,7 +82,6 @@ export default abstract class Container extends Component implements IContainer 
         } else {
             const componentClass = this.main.getComponentRegistry().getComponentClass(componentOpts.type);
             if (!componentClass) {
-                // tslint:disable-next-line:no-console
                 console.warn(`Unknown ComponentClass: ${componentOpts.type}.`);
                 return null;
             }
@@ -94,7 +89,7 @@ export default abstract class Container extends Component implements IContainer 
         }
         this.components.splice(pos, 0, component);
 
-        params = defaults({pos}, params);
+        params = {...params, pos};
         this.emit("addComponent", component, this, params);
         return component;
     }
@@ -111,7 +106,7 @@ export default abstract class Container extends Component implements IContainer 
      * @param params additional params to be passed down the the `detachComponent` event
      */
     public detachComponent(pos: number, params: any = {}): Component {
-        if (isString(pos)) {
+        if (typeof pos === "string") {
             const id = pos;
             let i;
             for (i = 0; i < this.components.length; i++) {
@@ -127,7 +122,7 @@ export default abstract class Container extends Component implements IContainer 
         const component = this.components[pos];
         this.components.splice(pos, 1);
 
-        params = defaults({pos}, params);
+        params = {...params, pos};
         this.emit("detachComponent", component, this, params);
         return component;
     }

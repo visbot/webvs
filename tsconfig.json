@@ -1,9 +1,20 @@
 {
     "compilerOptions": {
         "sourceMap": true,
+        "strict": false,
+        "target": "es2024",
+        "useDefineForClassFields": false,
+        "module": "preserve",
+        "moduleResolution": "bundler",
+        "allowImportingTsExtensions": true,
+        "noEmit": true,
         "lib": [
             "dom",
-            "es2015"
+            "es2024"
+        ],
+        "types": [
+            "vitest/globals",
+            "node"
         ]
     }
 }

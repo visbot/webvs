@@ -1,11 +1,9 @@
-import each from "lodash-es/each";
 import Component, { IContainer } from "../Component";
 import CodeInstance from "../expr/CodeInstance";
 import compileExpr from "../expr/compileExpr";
 import IMain from "../IMain";
 import { AudioSource, WebGLVarType } from "../utils";
 import Buffer from "../webgl/Buffer";
-import RenderingContext from "../webgl/RenderingContext";
 import ShaderProgram from "../webgl/ShaderProgram";
 
 export interface ITexerOpts {
@@ -151,9 +149,9 @@ export default class Texer extends Component {
     }
 
     public draw() {
-        each(this.code, (code) => {
+        for (const code of this.code) {
             this._drawScope(code, !this.inited);
-        });
+        }
         this.inited = true;
     }
 
