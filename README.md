@@ -9,15 +9,6 @@
 
 A Winamp AVS like visualization library for the web.
 
-## Demo
-
-Try out some examples, or test your own presets on the [Webvs test page](http://azeemarshad.in/webvs/examples/)
-
-## Documentation
-
-You can find TypeDoc generated documentation for Webvs on the [website](http://azeemarshad.in/webvs/).
-The documentation for the [Main](http://azeemarshad.in/webvs/classes/main.html) class is a good place to start.
-
 ## Installation
 
 ### npm
