@@ -2,7 +2,7 @@
 
 [![License](https://img.shields.io/github/license/visbot/webvs?color=blue&style=for-the-badge)](https://github.com/visbot/node-webvs/blob/main/LICENSE)
 [![Version: npm](https://img.shields.io/npm/v/@visbot/webvs?style=for-the-badge)](https://www.npmjs.org/package/@visbot/webvs)
-![GitHub branch check runs](https://img.shields.io/github/check-runs/visbot/webvs/main?style=for-the-badge)
+[![Build](https://img.shields.io/github/actions/workflow/status/visbot/webvs/ci.yml?style=for-the-badge)](https://github.com/visbot/webvs/actions)
 
 > [!NOTE]  
 > This fork is a modernized version of webvs 3.0.0 with no new features whatsoever. It might serve as a good basis for future work.
