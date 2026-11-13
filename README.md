@@ -4,6 +4,9 @@
 [![Version: npm](https://img.shields.io/npm/v/@visbot/webvs?style=for-the-badge)](https://www.npmjs.org/package/@visbot/webvs)
 ![GitHub branch check runs](https://img.shields.io/github/check-runs/visbot/webvs/main?style=for-the-badge)
 
+> [!NOTE]  
+> This fork is a modernized version of webvs 3.0.0 with no new features whatsoever. It might serve as a good basis for future work.
+
 A Winamp AVS like visualization library for the web.
 
 ## Demo
@@ -84,3 +87,7 @@ It serves the webvs test page at `http://localhost:5173/examples/` straight from
 ## Contributing
 
 [Fork](https://github.com/azeem/webvs/fork) and submit pull requests against master branch. Look for issues with [help wanted](https://github.com/azeem/webvs/issues?q=is%3Aissue+is%3Aopen+label%3A%22help+wanted%22) label for things that we need help with. For suggestions/bug fixes use [Github/Issues](https://github.com/azeem/webvs/issues). Chat with us at [visbot/AVS gitter channel](https://gitter.im/visbot/AVS).
+
+## LICENSE
+
+[The MIT License](license.txt) - Feel free to use, modify, and distribute this code.
